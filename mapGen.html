@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="mapGen.css"/>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+</head>
+<body>
+  <div>Radius:</div><input type="text" id="radius">
+  <div>Walls:</div><input type="text" id="wallNum">
+  <div>Missing Chance:</div><input type="text" id="miss">
+  <div>Turn Chance:</div><input type="text" id="turn">
+  <div>Mirror:</div><select id="mirrored"><option value="true">true</option><option value="false">false</option></select>
+  <br><button id="generateMap">Generate Map</button>
+  <br><div>Presets</div>
+  <button onClick="makeMap(40,40,60,60,50,'true')">Ruins</button>
+  <button onClick="makeMap(40,40,0,0,0,'true')">Final Destination</button>
+  <div id="map"></div>
+  <script src="mapGen.js"></script>
+</body>
+</html>

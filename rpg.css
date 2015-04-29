@@ -1,0 +1,59 @@
+
+.tile{
+  background-color:black;
+  height:25px;
+  width:25px;
+}
+.actionButton{
+  background-color:lightblue;
+  color:green;
+  border:2px green dashed;
+}
+.actionButton:hover{
+  border:2px green solid;
+}
+#stats{
+  width:150px;
+  height:400px;
+  background-color:#0099FF;
+  position:absolute;
+  float:left;
+}
+.stat{
+  width:150px;
+  height:25px;
+  background-color:#99CCFF;
+  margin-bottom:1px;
+}
+#map{
+  position:absolute;
+  left:160px;
+}
+#coolBar{
+  background-color:red;
+  height:25px;
+  width:100%;
+}
+#inventory{
+}
+#tileGui{
+  width:300px;
+  height:310px;
+}
+.gui{
+  background-color:gray;
+  border:1px black solid;
+}
+.guiChoice{
+  height:40px;
+  width:40px;
+  margin:10px;
+  position:relative;
+  top:35px;
+}
+#guiTitle{
+  font-size:2em;
+  position:Relative;
+  top:10px;
+  text-align: center;
+}

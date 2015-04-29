@@ -1,0 +1,385 @@
+ @-webkit-keyframes spinner {
+    from { -webkit-transform: rotateY(0deg);    }
+    to   { -webkit-transform: rotateY(-360deg); }
+  }
+ @-webkit-keyframes spinnercolor {
+    0% { -webkit-transform: rotateY(0deg); background:yellow; color:red;    }
+    33% { -webkit-transform: rotateY(120deg); background:blue; color:yellow;    }
+    66% { -webkit-transform: rotateY(240deg); background:red; color:blue;    }
+    100%   { -webkit-transform: rotateY(360deg); background:yellow; color:red; }
+  }
+ @-webkit-keyframes skewer {
+    from { -webkit-transform: skew(360deg,360deg);    }
+  }  
+ @-webkit-keyframes colorred {
+    0% { background:red;    }
+    33%   { background:yellow; }
+    66%  { background:blue; }
+    100% {background:red;}
+ } 
+  @-webkit-keyframes coloryellow {
+    0% { background:yellow;    }
+    33%   { background:blue; }
+    66%  { background:red; }
+    100% {background:yellow;}
+ } 
+  @-webkit-keyframes colorblue {
+    0% { background:blue;    }
+    33%   { background:red; }
+    66%  { background:yellow; }
+    100% {background:blue;}
+ } 
+.bodydiv{
+    display:none;
+    width:100%;
+}
+
+#header{
+    border-radius:20%;
+    font-size:5.5em;
+    font-family:cursive;
+    position:absolute;
+    left:1.6em;
+    top:-.5em;
+    color:orange;
+    background-color:black;
+    transition: .3s ease-in-out;
+    -webkit-animation-name: spinnercolor;
+-webkit-animation-timing-function: linear;
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-duration: 6s;
+}
+/* img{
+-webkit-animation-name: spinner;
+-webkit-animation-timing-function: linear;
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-duration: 6s;
+}*/
+#banner{
+    width:100%;
+    height:12.2em;
+    background-color:red;
+    margin:0;
+    border:0;
+    padding:0;
+    -webkit-animation-name: coloryellow;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 6s;
+}
+#tabs{
+    width:100%;
+    background-color:rgb(200,120,20);
+    height:5.3em;
+}
+.tab{
+    background-color:orange;
+    border:none;
+    color:rgb(100,40,0);
+    font-size:1.5em;
+    position:absolute;
+    top:8.6em;
+    width:8em;
+    height:3.3em;
+    transition: .1s ease-in-out;
+    
+}
+.tab:hover{
+    transform: scale(1.05);
+}
+#mpButton{
+    left:2%;
+}
+#amButton{
+    left:18%;
+}
+#ahButton{
+    left:34%;
+}
+#tButton{
+    left:50%;
+}
+#hwButton{
+    left:66%;
+}
+#pageMain{
+    width:100%;
+}
+.placeholder{
+    color:rgb(100,100,100);
+    border:1px dotted red;
+}
+#aboutMeSectionBackground{
+    background-color:rgb(0,200,0);
+    height:56em;
+    /*width:78em;*/
+}
+.aboutMeSection{
+    background-color:rgb(0,100,0);
+    position:absolute;
+}
+#aboutMeSection1{
+    height:53em;
+    width:75em;
+    top:20em;
+    left:2em;
+}
+#aboutMeSection2{
+    height:41em;
+    width:35em;
+    top:32em;
+    left:40em;
+}
+#aboutMeSection3{
+    height:10em;
+    width:38em;
+    top:59em;
+    left:4em;
+}
+#mePic{
+    position:absolute;
+    width:30em;
+    left:3em;
+}
+#aboutMePicText{
+    position:absolute;
+    left:50%;
+    width:49%;
+    
+}
+.titleAM{
+    font-size:250%;
+    text-decoration: overline underline;
+    color:rgb(20,20,10);
+}
+.normalTextAM{
+    font-size:110%;
+    color:rgb(10,200,30);
+}
+.listHeaderAM{
+    font-size:120%;
+    color:rgb(20,20,10);
+}
+.listItemAM{
+    font-size:90%;
+    color:rgb(0,30,0);
+}
+#aboutHTMLSectionBackground{
+    background-image:url("http://homeofdigi.com/wp-content/uploads/2014/06/Binary_Code.jpg");
+    height:40em;
+    /*width:78em;*/
+}
+.aboutHTMLSection{
+    opacity:.9;
+    background-color:rgb(0,0,5);
+    border:3px solid green;
+    position:absolute;
+}
+#aboutHTMLSection1{
+    height:17em;
+    width:35em;
+    top:19em;
+    left:2em;
+}
+#aboutHTMLSection2{
+    height:17em;
+    width:39em;
+    top:19em;
+    left:38em;
+}
+#aboutHTMLSection3{
+    height:20em;
+    width:35em;
+    top:37em;
+    left:2em;
+}
+#aboutHTMLSection4{
+    height:20em;
+    width:39em;
+    top:37em;
+    left:38em;
+}
+.titleAH{
+    font-size:250%;
+    text-decoration: overline underline;
+    color:green;
+}
+.normalTextAH{
+    font-size:110%;
+    color:rgb(100,200,0);
+}
+.listHeaderAH{
+    font-size:120%;
+    color:rgb(0,300,0);
+}
+.listItemAH{
+    font-size:90%;
+    color:rgb(0,240,20);
+}
+#color{
+    color:red;
+}
+#size{
+    font-size:150%;
+}
+#style{
+    font-style: italic;
+}
+#family{
+    font-family:cursive;
+}
+#introSectionBackground{
+    background-color:rgb(60,60,60);
+    height:42em;
+    /*width:78em;*/
+    
+}
+.introSection{
+    position:absolute;
+    background-color:rgb(100,10,10);
+    border:1px solid blue;
+}
+#introSection1{
+    top:19em;
+    left:1em;
+    height:6em;
+    width:75em;
+}
+#introSection2{
+    top:26em;
+    left:46em;
+    height:14em;
+    width:30em;
+}
+#introSection3{
+    top:26em;
+    left:1em;
+    height:32em;
+    width:20em;
+}
+#introSection4{
+    left:46em;
+    top:41em;
+    height:17em;
+    width:30em;
+}
+.titleI{
+    font-size:250%;
+    text-decoration: overline underline;
+    color:rgb(20,40,220);
+}
+.normalTextI{
+    font-size:110%;
+    color:rgb(100,100,200);
+}
+.listHeaderI{
+    font-size:120%;
+    color:rgb(0,300,0);
+}
+.listItemI{
+    font-size:90%;
+    color:rgb(400,300,40);
+}
+#rocketImg{
+    opacity:.8;
+    width:22em;
+    position:absolute;
+    left:22em;
+    top:0em;
+}
+#compSciText{
+    position:absolute;
+    left:1em;
+}
+
+#thingsSectionBackground{
+    background-color:rgb(160,60,60);
+    height:40em;
+    /*width:78em;*/
+    
+}
+
+#harwareSectionBackground{
+    background-color:rgb(30,60,80);
+    height:143em;
+    /*width:78em;*/
+    
+}
+.hardwareSection{
+    position:absolute;
+    background-color:rgb(30,30,50);
+}
+#hardwareSection1{
+    top:48em;
+    left:-28em;
+    height:6em;
+    width:65em;
+    transform:rotateZ(270deg);
+}
+#hardwareSection2{
+    top:19em;
+    left:10em;
+    height:19em;
+    width:30em;
+}
+#hardwareSection3{
+    top:19em;
+    left:42em;
+    height:140em;
+    width:35em;
+}
+#hardwareSection4{
+    left:10em;
+    top:40em;
+    height:65em;
+    width:30em;
+}
+.titleHW{
+    font-size:250%;
+    text-decoration: overline underline;
+    color:rgb(150,60,5);
+}
+.normalTextHW{
+    font-size:110%;
+    color:rgb(100,100,200);
+}
+.listHeaderHW{
+    font-size:120%;
+    color:rgb(100,100,200);
+}
+.listItemHW{
+    font-size:90%;
+    color:rgb(100,160,20);
+}
+.hardwareImg{
+    width:10em;
+    height:10em;
+    position:absolute;
+    left:25em;
+}
+#ribonCable{
+    position:absolute;
+    left:3.5em;
+    width:20em;
+    height:20em;
+}
+#mundaneCable{
+    position:absolute;
+    left:3.5em;
+    top:35em;
+    width:20em;
+    height:20em;
+}
+#snurtle{
+    top:126em;
+    left:14em;
+    width:10.2em;
+    height:10em;
+}
+.tech{
+    margin-right:20em;
+}
+#taskbar{
+    color:orange;
+    font-size:2em;
+}

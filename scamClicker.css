@@ -1,0 +1,33 @@
+body {
+    text-align: center;
+}
+
+#scam {
+    margin-left: 42% ;
+    background-color: #BE8EB0;
+    color: #ffffff;
+    width: 15%;
+    border: black solid 2px;
+    border-radius: 7px;
+    border-color:#000000;
+}
+
+#popUp{
+    position:absolute;
+    height:200px;
+}
+.popUpHidden{
+   visibility:hidden; 
+}
+.popUpShown{
+    visibility:show;
+}
+
+.pizza {
+    height: 30px;
+}
+.moneyAnimation{
+  position:absolute;
+  left:60%;
+  color:red;
+}

@@ -1,0 +1,264 @@
+<!--
+To change this template use Tools | Templates.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="vindinium.css">
+    <title></title>
+</head>
+<body>
+    <div>
+        <div id="header">
+            VINDINIUM BOT
+        </div>
+        <div>
+            <code>
+                var Bot = require('bot');
+var PF = require('pathfinding');
+//var bot = new Bot('lfqp6c1l', 'arena', 'http://24.6.28.217:9000'); //Put your bot's code here and change training to Arena when you want to fight others.
+var bot = new Bot('1s9oeyk6', 'arena', 'http://vindinium.org'); //Put your bot's code here and change training to Arena when you want to fight others.
+var goDir;
+var Promise = require('bluebird');
+Bot.prototype.botBrain = function() {
+    return new Promise(function(resolve, reject) {
+        _this = bot;
+        /* Write your bot below Here */
+        /* Set `bot.goDir` in the direction you want to go */
+        // This Code moves in random directions //
+        //     var rand = Math.floor(Math.random() * 4);
+        //     var dirs = ["north", "south", "east", "west"];
+        //     bot.goDir = dirs[rand];
+        // This Code finds the nearest Free Mine and goes in that direction //
+        var dir = "stay";
+        var turnNum = bot.data.game.turn;
+        var remainingTurns = 1200-turnNum;
+        //Declare Variables About Me
+        console.log("TURN "+turnNum);
+        var myBot = bot.yourBot;
+        var myId = myBot.id;
+        var myPos = [myBot.pos.x, myBot.pos.y];
+        //bots is an array of all the enemy bots, I modified my index.js to return "UNPATHABLE" if there is no path betweeb the target.
+        var bots = [];
+        if(myId != 1)
+            if(bot.findPath(myPos, [bot.bot1.pos.x, bot.bot1.pos.y]) != "UNPATHABLE") bots.push(bot.bot1);
+        if(myId != 2)
+            if(bot.findPath(myPos, [bot.bot2.pos.x, bot.bot2.pos.y]) != "UNPATHABLE") bots.push(bot.bot2);
+        if(myId != 3)
+            if(bot.findPath(myPos, [bot.bot3.pos.x, bot.bot3.pos.y]) != "UNPATHABLE") bots.push(bot.bot3);
+        if(myId != 4)
+            if(bot.findPath(myPos, [bot.bot4.pos.x, bot.bot4.pos.y]) != "UNPATHABLE") bots.push(bot.bot4);
+        //check the current gold at end of game for each bot assuming rates continue.
+        var currentEndGold = [bot.data.game.heroes[0].gold+(bot.bot1.mineCount*(remainingTurns/4)),bot.data.game.heroes[1].gold+(bot.bot2.mineCount*(remainingTurns/4)),bot.data.game.heroes[2].gold+(bot.bot3.mineCount*(remainingTurns/4)),bot.data.game.heroes[3].gold+(bot.bot4.mineCount*(remainingTurns/4))];
+        //Math to figure out who the winner will be if gold continues at current Rate.
+        var currentWinner = 0;
+        for(i=0;i<currentEndGold.length;i++){
+            if(currentEndGold[i]>currentEndGold[currentWinner])currentWinner = i;
+        }
+        currentWinner++;
+        console.log(currentEndGold);
+        console.log("WINNER: "+currentWinner);
+        //array of the positions of all the bots, preferable to bot.bots because it does not include bots that cannot be pathed to.
+        var botsPos = [];
+        for(i = 0; i < bots.length; i++) {
+            botsPos.push([bots[i].pos.x, bots[i].pos.y]);
+        }
+        console.log(botsPos);
+        //array of all the spawn positions of the boterinos.
+        var botsSpawn = [];
+        for(i=0;i<bots.length;i++){
+            botsSpawn.push([bot.data.game.heroes[bots[i].id-1].spawnPos.x,bot.data.game.heroes[bots[i].id-1].spawnPos.y]);
+        }
+        console.log("SpawnPos: "+botsSpawn);
+        //array of all taverns
+        var taverns = [];
+        for(i = 0; i < bot.taverns.length; i++) {
+            if(bot.findPath(myPos, bot.taverns[i]) != "UNPATHABLE") taverns.push(bot.taverns[i]);
+        }
+        //finds total number of mines on the map, including unpathable ones
+        var totalMineCount = bot.freeMines.length+bot.bot1mines.length+bot.bot2mines.length+bot.bot3mines.length+bot.bot4mines.length;
+        //creates two arrays of the x,y positions of mines I own, and mines I do not own that ARE pathable.
+        var meMines = [];
+        var notMeMines = [];
+        for(i = 0; i < bot.freeMines.length; i++)
+            if(bot.findPath(myPos, bot.freeMines[i]) != "UNPATHABLE") notMeMines.push(bot.freeMines[i]);
+        if(myId != 1) {
+            for(i = 0; i < bot.bot1mines.length; i++)
+                if(bot.findPath(myPos, bot.bot1mines[i]) != "UNPATHABLE") notMeMines.push(bot.bot1mines[i]);
+        } else
+            for(i = 0; i < bot.bot1mines.length; i++) meMines.push(bot.bot1mines[i]);
+        if(myId != 2) {
+            for(i = 0; i < bot.bot2mines.length; i++)
+                if(bot.findPath(myPos, bot.bot2mines[i]) != "UNPATHABLE") notMeMines.push(bot.bot2mines[i]);
+        } else
+            for(i = 0; i < bot.bot2mines.length; i++) meMines.push(bot.bot2mines[i]);
+        if(myId != 3) {
+            for(i = 0; i < bot.bot3mines.length; i++)
+                if(bot.findPath(myPos, bot.bot3mines[i]) != "UNPATHABLE") notMeMines.push(bot.bot3mines[i]);
+        } else
+            for(i = 0; i < bot.bot3mines.length; i++) meMines.push(bot.bot3mines[i]);
+        if(myId != 4) {
+            for(i = 0; i < bot.bot4mines.length; i++)
+                if(bot.findPath(myPos, bot.bot4mines[i]) != "UNPATHABLE") notMeMines.push(bot.bot4mines[i]);
+        } else
+            for(i = 0; i < bot.bot4mines.length; i++) meMines.push(bot.bot4mines[i]);
+        //The below code choses an ation to perform;
+        //action is a var used to store what action my bot will perform
+        var action = "";
+        //specialData is a var used to store data for the action to be performed
+        var specialData;
+        //check if my bot is at less than 45 life.
+        if(myBot.life < 45) {
+            //by default if life is less than 45 bot should heal.
+            action = "heal";
+            console.log("Before for");
+            //check if a bot is agacent to me and attack it because you cannot run away in vindinium
+            for(i = 0; i < bots.length; i++) {
+                var closestPlayer = botsPos[0];
+                if(bot.findDistance(myPos, botsPos[i]) == 2&&botsPos[i]!=botsSpawn[i]) {
+                    closestPlayer = botsPos[i];
+                    action = "attack";
+                    specialData = closestPlayer;
+                }
+            }
+            console.log("Before for 2");
+            //check if there is a tavern nearby and move to it, this overrides attacking an ajacent player, it takes 2 moves to heal at a tavern with distance 3, and scince the threshhold is 45 life this means i should arive at the tavern alive.
+            for(i = 0; i < taverns.length; i++)
+                if(bot.findDistance(myPos, taverns[i]) <= 3) action = "heal";
+            //If I have 0 mines just suicide on the nearest player to deal some damage to them.
+            if(meMines.length == 0) action = "suicide";
+        } else {
+            //If I have more than 45 life...
+            //default action is "nothingToDo"
+            action = "nothingToDo";
+            //if I own less than 60% of the mines or will not win the game at the current rate claim more mines.
+            if(meMines.length < totalMineCount*0.6||currentWinner!=myId) action = "claim";
+            //if I own less than 30% of the mines and it is past turn 600 and I will not win at the current rate then attack the player w/ the most mines.
+            if(meMines.length<totalMineCount*0.3&&turnNum>600&&currentWinner!=myId){
+                var playerWithMostMines = bots[0];
+                for(i=0;i<bots.length;i++){
+                    if(bots[i].mineCount>playerWithMostMines.mineCount){
+                        playerWithMostMines = bots[i];
+                    }
+                }
+                specialData=[playerWithMostMines.pos.x,playerWithMostMines.pos.y];
+                action = "attack";
+            }
+            //the below code checks for enemies that can be cut off on their retreat to a tavern
+            var closestTavernToLowEnemy = [taverns[0], taverns[0], taverns[0]];
+            for(i = 0; i < bots.length; i++) {
+                //checks if a bot has less than 30 life and at least 10% of the mines
+                if(bots[i].life < 30 && bots[i].mineCount > totalMineCount*0.1) {
+                    //finds the closest Tavern to said bot,
+                    for(e = 0; e < taverns.length; e++) {
+                        if(bot.findDistance(botsPos[i], closestTavernToLowEnemy[i]) > bot.findDistance(botsPos[i], taverns[e])) {
+                            closestTavernToLowEnemy[i] = taverns[e];
+                        }
+                    }
+                    //sets action to "intercept" and special Data to the closest tavern that an enemy is retreating too.
+                    if(bot.findDistance(myPos, closestTavernToLowEnemy[i]) < bot.findDistance(botsPos[i], closestTavernToLowEnemy[i])) {
+                        action = "intercept";
+                        specialData = closestTavernToLowEnemy[i];
+                    }
+                }
+            }
+            //if I have less than 90 life and am ajacent to a tavern take a drink
+            if(myBot.life < 90) {
+                for(i = 0; i < taverns.length; i++) {
+                    if(bot.findDistance(myPos, taverns[i]) == 2) {
+                        action = "heal";
+                    }
+                }
+            }
+            //if there is a player in 7 distance of me with at least 10% of the mines that I have more life than (or if we are agacent) then attack it.
+            for(i = 0; i < bots.length; i++) {
+                var closestPlayer = botsPos[0];
+                if((bots[i].life < myBot.life && bot.findDistance(myPos, botsPos[i]) < 7 && (bots[i].mineCount > totalMineCount*0.1) && bot.findDistance(myPos, botsPos[i]) < bot.findDistance(myPos, closestPlayer)) || (bot.findDistance(myPos, botsPos[i]) == 2&&botsPos[i]!=botsSpawn[i])) {
+                    closestPlayer = botsPos[i];
+                    action = "attack";
+                    specialData = closestPlayer;
+                }
+            }
+            //If my hero wants to heal but I have 0 mines (nothing to loose) then just attempt to claim a mine. This is in so stop my hero from attempting to drink when he has no gold.
+            if(action == "heal" && meMines.length == 0) {
+                action = "claim";
+            }
+        }
+        //This code takes the selected action and executes it.
+        switch(action) {
+            case "claim":
+                //If action is  is claim then move to the nearest mine I do not own and claim it
+                var closestMine = notMeMines[0];
+                for(i = 0; i < notMeMines.length; i++) {
+                    if(bot.findDistance(myPos, closestMine) > bot.findDistance(myPos, notMeMines[i])) {
+                        closestMine = notMeMines[i];
+                    }
+                }
+                console.log(notMeMines);
+                console.log(closestMine);
+                bot.goDir = bot.findPath(myPos, closestMine);
+                break;
+            case "heal":
+                //If action is heal then move to the nearest Tavern and take a drink
+                var closestTavern = taverns[0];
+                for(i = 0; i < taverns.length; i++) {
+                    if(bot.findDistance(myPos, closestTavern) > bot.findDistance(myPos, taverns[i])) {
+                        closestTavern = taverns[i];
+                    }
+                }
+                console.log(taverns);
+                console.log(closestTavern);
+                bot.goDir = bot.findPath(myPos, closestTavern);
+                break;
+            case "suicide":
+                //If action is suicide move to the nearest player and attack it.
+                var closestPlayer = botsPos[0];
+                for(i = 0; i < botsPos.length; i++) {
+                    if(bot.findDistance(myPos, closestPlayer) > bot.findDistance(myPos, botsPos[i])) {
+                        closestPlayer = botsPos[i];
+                    }
+                }
+                console.log(botsPos);
+                console.log(closestPlayer);
+                bot.goDir = bot.findPath(myPos, closestPlayer);
+                break;
+            case "intercept":
+                //If action is intercept move tword the tavern that my bot is trying to cut another bot off from
+                bot.goDir = bot.findPath(myPos, specialData);
+                console.log(specialData);
+                break;
+            case "attack":
+                //If action is attack then move tword the player that is to be attacked.
+                bot.goDir = bot.findPath(myPos, specialData);
+                console.log(specialData);
+                break;
+            case "nothingToDo":
+                //If action is nothing to do path tword the nearest Tavern and stand near it; if life is less than 90, drink
+               var closestTavern = taverns[0];
+                for(i = 0; i < taverns.length; i++) {
+                    if(bot.findDistance(myPos, closestTavern) > bot.findDistance(myPos, taverns[i])) {
+                        closestTavern = taverns[i];
+                    }
+                }
+                console.log(taverns);
+                console.log(closestTavern);
+                if(bot.findDistance(myPos,closestTavern)!=2||myBot.life<90)bot.goDir = bot.findPath(myPos, closestTavern);
+                else bot.goDir="stay";
+                break;
+            default:
+                bot.goDir = "stay";
+                break;
+        }
+        
+        /* DON'T REMOVE ANTYTHING BELOW THIS LINE */
+        console.log(action);
+        resolve();
+    });
+}
+bot.runGame();
+            </code>
+        </div>
+    </div>
+    <script src="vindinium.js" ></script>
+</body>
+</html>
